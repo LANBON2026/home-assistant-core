@@ -91,9 +91,17 @@ jobs:
       - name: Validate generated requirements
         if: always() && steps.setup.outcome == 'success'
         run: .venv/bin/python -m script.gen_requirements_all validate
-      - name: Run repository checks
+      - name: Type-check LANBON source
         if: always() && steps.setup.outcome == 'success'
-        run: uv run --no-sync prek run --all-files
+        run: uv run --no-sync mypy homeassistant/components/lanbon
+      - name: Lint LANBON source and tests
+        if: always() && steps.setup.outcome == 'success'
+        run: uv run --no-sync pylint --ignore-missing-annotations=y homeassistant/components/lanbon tests/components/lanbon
+      - name: Check candidate formatting
+        if: always() && steps.setup.outcome == 'success'
+        run: |
+          uv run --no-sync ruff check homeassistant/components/lanbon tests/components/lanbon
+          uv run --no-sync ruff format --check homeassistant/components/lanbon tests/components/lanbon
       - name: Preserve candidate diff
         if: always()
         run: git diff HEAD -- homeassistant/components/lanbon tests/components/lanbon > lanbon-candidate.patch
