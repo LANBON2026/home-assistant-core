@@ -1,0 +1,97 @@
+name: LANBON candidate Linux validation
+on:
+  push:
+    branches: ['codex/ha-metadata-validation-20261016']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  core:
+    name: Current Core compatibility validation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: home-assistant/core
+          ref: 782c00e75c86301db2090b2bce66887e037c1de9
+          persist-credentials: false
+      - name: Apply gateway review candidate
+        env:
+          CANDIDATE: "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"
+          CANDIDATE_SHA256: "2ab0037a17ddd5a4a6c1a61d8417ce76a6ec4c70b7d7534e42173ef2c5b11280"
+        run: |
+          python - <<'PY'
+          import os, base64, gzip, json, hashlib
+          from pathlib import Path
+          raw = gzip.decompress(base64.b64decode(os.environ['CANDIDATE']))
+          assert hashlib.sha256(raw).hexdigest() == os.environ['CANDIDATE_SHA256']
+          for name, content in json.loads(raw).items():
+              Path(name).write_text(content, encoding='utf-8')
+          PY
+      - name: Install Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bluez ffmpeg libturbojpeg libxml2-utils libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libswresample-dev libswscale-dev libudev-dev
+          python3 -m pip install uv
+          uv python install "$(cat .python-version)"
+      - name: Set up Core using its development script
+        id: setup
+        run: script/setup
+      - name: Install published dependency and regenerate requirements
+        if: steps.setup.outcome == 'success'
+        run: |
+          uv pip install --python .venv/bin/python 'aiolanbon==0.2.1'
+          uv run --no-sync python -c "from importlib.metadata import version; assert version('aiolanbon') == '0.2.1'"
+          uv run --no-sync python -m script.gen_requirements_all
+      - name: Generate LANBON translations
+        if: steps.setup.outcome == 'success'
+        run: .venv/bin/python -m script.translations develop --integration lanbon
+      - name: Regenerate full integration metadata
+        if: steps.setup.outcome == 'success'
+        run: uv run --no-sync python -m script.hassfest
+      - name: Prove gateway metadata regression on the previous source
+        if: steps.setup.outcome == 'success'
+        run: |
+          cp homeassistant/components/lanbon/switch.py /tmp/lanbon-switch-fixed.py
+          git show HEAD:homeassistant/components/lanbon/switch.py > homeassistant/components/lanbon/switch.py
+          set +e
+          uv run --no-sync pytest -q --timeout=60 tests/components/lanbon/test_switch.py::test_gateway_versions_survive_switch_registration > /tmp/metadata-regression.txt 2>&1
+          result=$?
+          set -e
+          cat /tmp/metadata-regression.txt
+          cp /tmp/lanbon-switch-fixed.py homeassistant/components/lanbon/switch.py
+          test "$result" -eq 1
+          python -c "from pathlib import Path; assert '3 failed, 1 passed' in Path('/tmp/metadata-regression.txt').read_text()"
+      - name: Run real Core pytest and coverage
+        if: steps.setup.outcome == 'success'
+        run: uv run --no-sync pytest -q --timeout=60 tests/components/lanbon --cov=homeassistant.components.lanbon --cov-report=term-missing --cov-report=xml:lanbon-coverage.xml
+      - name: Validate full integration metadata
+        if: always() && steps.setup.outcome == 'success'
+        run: uv run --no-sync python -m script.hassfest --action validate
+      - name: Validate generated requirements
+        if: always() && steps.setup.outcome == 'success'
+        run: .venv/bin/python -m script.gen_requirements_all validate
+      - name: Type-check LANBON source
+        if: always() && steps.setup.outcome == 'success'
+        run: uv run --no-sync mypy homeassistant/components/lanbon
+      - name: Lint LANBON source and tests
+        if: always() && steps.setup.outcome == 'success'
+        run: uv run --no-sync pylint --ignore-missing-annotations=y homeassistant/components/lanbon tests/components/lanbon
+      - name: Run full prek checks
+        if: always() && steps.setup.outcome == 'success'
+        env:
+          PREK_SKIP: no-commit-to-branch,mypy,pylint,gen_requirements_all,hassfest,hassfest-metadata,hassfest-mypy-config,zizmor
+        run: uv run --no-sync prek run --all-files
+      - name: Preserve exact compatibility diff
+        if: always()
+        run: git diff HEAD > lanbon-current-core.patch
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lanbon-current-core-validation
+          path: |
+            lanbon-current-core.patch
+            lanbon-coverage.xml
+            homeassistant/generated/integrations.json
+            homeassistant/components/lanbon/config_flow.py
